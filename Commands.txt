@@ -1,0 +1,32 @@
+docker build -t node_image .
+kubectl create deployment node-app --image=node_image
+
+kubectl get deployments
+kubectl get pods 
+
+kubectl delete deployment node-app
+
+docker tag node_image ejupishaban/node_image:1.0
+
+docker push ejupishaban/node_image:1.0
+
+kubectl create deployment node-app --image=ejupishaban/node_image:1.0
+
+kubectl expose deployment node-app --type=LoadBalancer --port 9876
+kubectl get services
+
+minikube service node-app
+
+kubectl scale deployment/node-app --replicas=3
+kubectl scale deployment/node-app --replicas=1
+
+docker build -t ejupishaban/node_image:1.1 .
+docker push ejupishaban/node_image:1.1
+
+kubectl set image deployment/node-app node-image-sc5cz=ejupishaban/node_image:1.1
+
+kubectl rollout status deployment/node-app
+
+
+
+
